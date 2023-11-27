@@ -554,7 +554,12 @@ int main() {
         wait_vblank();
         *bg0_x_scroll = xscroll;
         sprite_update_all();
-
+        if(&square->yvel<0){
+            yscroll--;
+        }
+        if(&square->yvel>0){
+            yscroll++;
+        }
         /* delay some */
         delay(100);
     }
