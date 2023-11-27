@@ -13,7 +13,7 @@
 #include "square.h"
 
 /* include the tile map we are using */
-#include "obby1.h"
+#include "baseplate1.h"
 
 /* the tile mode flags needed for display control register */
 #define MODE0 0x00
