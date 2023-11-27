@@ -351,8 +351,8 @@ struct Square {
 
 /* initialize the koopa */
 void square_init(struct Square* square) {
-    square->x = 100;
-    square->y = 113;
+    square->x = 20;
+    square->y = 140;
     square->yvel = 0;
     square->gravity = 75;
     square->border = 100;
