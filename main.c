@@ -477,8 +477,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
 
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, map,
-            map_width, map_height);
+    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, obby1,
+            obby1_width, obby1_height);
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
@@ -537,14 +537,14 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-
+    int yscroll = 0;
     /* loop forever */
     while (1) {
         /* update the koopa */
-        square_update(&square, xscroll);
+        square_update(&square, xscroll, yscroll);
 
         /* now the arrow keys move the koopa */
-        square_right(&square)
+        square_right(&square);
         xscroll++;
         
         if (button_pressed(BUTTON_A)) {
