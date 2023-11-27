@@ -13,7 +13,7 @@
 #include "square.h"
 
 /* include the tile map we are using */
-#include "baseplate1.h"
+#include "map.h"
 
 /* the tile mode flags needed for display control register */
 #define MODE0 0x00
@@ -148,7 +148,7 @@ void setup_background() {
         (0 << 14);        /* bg size, 0 is 256x256 */
 
     /* load the tile data into screen block 16 */
-    memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) obby1, obby1_width * obby1_height);
+    memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) map, map_width * map_height);
 }
 
 /* just kill time */
@@ -404,7 +404,7 @@ void square_stop(struct Square* square) {
 /* start the koopa jumping, unless already fgalling */
 void square_jump(struct Square* square) {
     if (!square->falling) {
-        square->yvel = -1000;
+        square->yvel = -1025;
         square->falling = 1;
     }
 }
@@ -477,8 +477,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
 
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, obby1,
-            obby1_width, obby1_height);
+    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, map,
+            map_width, map_height);
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
@@ -554,10 +554,10 @@ int main() {
         wait_vblank();
         *bg0_x_scroll = xscroll;
         sprite_update_all();
-        if(square*->yvel<0){
+        if(square.yvel<0){
             yscroll--;
         }
-        if(square*->yvel>0){
+        if(square.yvel>0){
             yscroll++;
         }
         /* delay some */
