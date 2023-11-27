@@ -482,7 +482,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
-    if (tile == 1 || tile == 2 || tile == 23 || tile == 24) {
+    if (tile == 1 || tile == 2 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9
+        tile == 40 || tile == 41 || tile ==42) {
         /* stop the fall! */
         square->falling = 0;
         square->yvel = 0;
