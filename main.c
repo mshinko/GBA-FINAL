@@ -361,7 +361,7 @@ void square_init(struct Square* square) {
     square->counter = 0;
     square->falling = 0;
     square->animation_delay = 8;
-    square->sprite = sprite_init(square->x, square->y, SIZE_16_32, 0, 0, square->frame, 0);
+    square->sprite = sprite_init(square->x, square->y, SIZE_16_16, 0, 0, square->frame, 0);
 }
 
 /* move the koopa left or right returns if it is at edge of the screen */
@@ -554,7 +554,12 @@ int main() {
         wait_vblank();
         *bg0_x_scroll = xscroll;
         sprite_update_all();
-
+        if(*square->yvel<0){
+            yscroll--;
+        }
+        if(*square->yvel>0){
+            yscroll++;
+        }
         /* delay some */
         delay(100);
     }
