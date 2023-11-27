@@ -354,7 +354,7 @@ void square_init(struct Square* square) {
     square->x = 100;
     square->y = 113;
     square->yvel = 0;
-    square->gravity = 0;
+    square->gravity = 75;
     square->border = 40;
     square->frame = 0;
     square->move = 0;
@@ -404,7 +404,7 @@ void square_stop(struct Square* square) {
 /* start the koopa jumping, unless already fgalling */
 void square_jump(struct Square* square) {
     if (!square->falling) {
-        square->yvel = -1350;
+        square->yvel = -1000;
         square->falling = 1;
     }
 }
@@ -468,7 +468,7 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
 
 /* update the koopa */
 /* update the koopa */
-void square_update(struct Square* square, int xscroll) {
+void square_update(struct Square* square, int xscroll,int yscroll) {
     /* update y position and speed if falling */
     if (square->falling) {
         square->y += (square->yvel >> 8);
@@ -476,13 +476,13 @@ void square_update(struct Square* square, int xscroll) {
     }
 
     /* check which tile the koopa's feet are over */
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, 0, obby1,
-            obby1_width, obby1_height);
+
+    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, map,
+            map_width, map_height);
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
-    if ((tile >= 1 && tile <= 6) || 
-            (tile >= 12 && tile <= 17)) {
+    if (tile == 1 || tile == 2 || tile == 23 || tile == 24) {
         /* stop the fall! */
         square->falling = 0;
         square->yvel = 0;
@@ -544,17 +544,9 @@ int main() {
         square_update(&square, xscroll);
 
         /* now the arrow keys move the koopa */
-        if (button_pressed(BUTTON_RIGHT)) {
-            if (square_right(&square)) {
-                xscroll++;
-            }
-        } else if (button_pressed(BUTTON_LEFT)) {
-            if (square_left(&square)) {
-                xscroll--;
-            }
-        } else {
-            square_stop(&square);
-        }
+        square_right(&square)
+        xscroll++;
+        
         if (button_pressed(BUTTON_A)) {
            square_jump(&square);
         }
