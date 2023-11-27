@@ -355,7 +355,7 @@ void square_init(struct Square* square) {
     square->y = 113;
     square->yvel = 0;
     square->gravity = 75;
-    square->border = 40;
+    square->border = 100;
     square->frame = 0;
     square->move = 0;
     square->counter = 0;
