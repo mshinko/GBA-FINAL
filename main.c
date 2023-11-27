@@ -12,8 +12,8 @@
 /* include the sprite image we are using */
 #include "square.h"
 
-/* include the tile map we are using */
-#include "map.h"
+/* include the tile baseplate we are using */
+#include "baseplate.h"
 
 /* the tile mode flags needed for display control register */
 #define MODE0 0x00
@@ -148,7 +148,7 @@ void setup_background() {
         (0 << 14);        /* bg size, 0 is 256x256 */
 
     /* load the tile data into screen block 16 */
-    memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) map, map_width * map_height);
+    memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) baseplate, baseplate_width * baseplate_height);
 }
 
 /* just kill time */
@@ -409,9 +409,9 @@ void square_jump(struct Square* square) {
     }
 }
 
-/* finds which tile a screen coordinate maps to, taking scroll into acco  unt */
+/* finds which tile a screen coordinate baseplates to, taking scroll into acco  unt */
 unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
-        const unsigned short* tilemap, int tilemap_w, int tilemap_h) {
+        const unsigned short* tilebaseplate, int tilebaseplate_w, int tilebaseplate_h) {
 
     /* adjust for the scroll */
     x += xscroll;
@@ -422,47 +422,47 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
     y >>= 3;
 
     /* account for wraparound */
-    while (x >= tilemap_w) {
-        x -= tilemap_w;
+    while (x >= tilebaseplate_w) {
+        x -= tilebaseplate_w;
     }
-    while (y >= tilemap_h) {
-        y -= tilemap_h;
+    while (y >= tilebaseplate_h) {
+        y -= tilebaseplate_h;
     }
     while (x < 0) {
-        x += tilemap_w;
+        x += tilebaseplate_w;
     }
     while (y < 0) {
-        y += tilemap_h;
+        y += tilebaseplate_h;
     }
 
-    /* the larger screen maps (bigger than 32x32) are made of multiple stitched
+    /* the larger screen baseplates (bigger than 32x32) are made of multiple stitched
        together - the offset is used for finding which screen block we are in
        for these cases */
     int offset = 0;
 
-    /* if the width is 64, add 0x400 offset to get to tile maps on right   */
-    if (tilemap_w == 64 && x >= 32) {
+    /* if the width is 64, add 0x400 offset to get to tile baseplates on right   */
+    if (tilebaseplate_w == 64 && x >= 32) {
         x -= 32;
         offset += 0x400;
     }
 
     /* if height is 64 and were down there */
-    if (tilemap_h == 64 && y >= 32) {
+    if (tilebaseplate_h == 64 && y >= 32) {
         y -= 32;
 
         /* if width is also 64 add 0x800, else just 0x400 */
-        if (tilemap_w == 64) {
+        if (tilebaseplate_w == 64) {
             offset += 0x800;
         } else {
             offset += 0x400;
         }
     }
 
-    /* find the index in this tile map */
+    /* find the index in this tile baseplate */
     int index = y * 32 + x;
 
     /* return the tile */
-    return tilemap[index + offset];
+    return tilebaseplate[index + offset];
 }
 
 
@@ -477,12 +477,12 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
 
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, map,
-            map_width, map_height);
+    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, baseplate,
+            baseplate_width, baseplate_height);
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
-    if (tile == 1 || tile == 2 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9
+    if (tile == 1 || tile == 2 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
         tile == 40 || tile == 41 || tile ==42) {
         /* stop the fall! */
         square->falling = 0;
@@ -493,8 +493,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
         /* move him down one because there is a one pixel gap in the image */
         square->y++;
-
-    } else {
+    }
+    else {
         /* he is falling now */
         square->falling = 1;
     }
@@ -538,7 +538,7 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-    int yscroll = 0;
+    int yscroll = 80;
     /* loop forever */
     while (1) {
         /* update the koopa */
