@@ -7,7 +7,7 @@
 #define SCREEN_HEIGHT 160
 
 /* include the background image we are using */
-#include "baseplate.h"
+#include "background.h"
 
 /* include the sprite image we are using */
 #include "square.h"
@@ -135,8 +135,8 @@ void setup_background() {
 /*    memcpy16_dma((unsigned short*) bg_palette, (unsigned short*) background_palette, PALETTE_SIZE);
 */
     /* load the image into char block 0 */
-    memcpy16_dma((unsigned short*) char_block(0), (unsigned short*) baseplate,
-            (baseplate_width * baseplate_height) / 2);
+    memcpy16_dma((unsigned short*) char_block(0), (unsigned short*) background,
+            (background_width * background_height) / 2);
 
     /* set all control the bits in this register */
     *bg0_control = 0 |    /* priority, 0 is highest, 3 is lowest */
