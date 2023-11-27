@@ -7,14 +7,14 @@
 #define SCREEN_HEIGHT 160
 
 /* include the background image we are using */
-#include "obstacles.h"
+#include "background.h"
 
 /* include the sprite image we are using */
 #include "square.h"
-
+#include "obstacles.h"
 /* include the tile baseplate we are using */
 #include "baseplate.h"
-
+#include "obby1.h"
 /* the tile mode flags needed for display control register */
 #define MODE0 0x00
 #define BG0_ENABLE 0x100
@@ -404,7 +404,7 @@ void square_stop(struct Square* square) {
 /* start the koopa jumping, unless already fgalling */
 void square_jump(struct Square* square) {
     if (!square->falling) {
-        square->yvel = -1025;
+        square->yvel = -1000;
         square->falling = 1;
     }
 }
@@ -538,7 +538,7 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-    int yscroll = 80;
+    int yscroll = 90;
     /* loop forever */
     while (1) {
         /* update the koopa */
@@ -546,7 +546,7 @@ int main() {
 
         /* now the arrow keys move the koopa */
         square_right(&square);
-        xscroll++;
+        xscroll += 0.1;
         
         if (button_pressed(BUTTON_A)) {
            square_jump(&square);
