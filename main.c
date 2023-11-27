@@ -12,8 +12,8 @@
 /* include the sprite image we are using */
 #include "square.h"
 #include "obstacles.h"
-/* include the tile baseplate we are using */
-#include "baseplate.h"
+/* include the tile map we are using */
+#include "map.h"
 #include "obby1.h"
 /* the tile mode flags needed for display control register */
 #define MODE0 0x00
@@ -148,7 +148,7 @@ void setup_background() {
         (0 << 14);        /* bg size, 0 is 256x256 */
 
     /* load the tile data into screen block 16 */
-    memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) baseplate, baseplate_width * baseplate_height);
+    memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) map, map_width * map_height);
 }
 
 /* just kill time */
@@ -409,9 +409,9 @@ void square_jump(struct Square* square) {
     }
 }
 
-/* finds which tile a screen coordinate baseplates to, taking scroll into acco  unt */
+/* finds which tile a screen coordinate maps to, taking scroll into acco  unt */
 unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
-        const unsigned short* tilebaseplate, int tilebaseplate_w, int tilebaseplate_h) {
+        const unsigned short* tilemap, int tilemap_w, int tilemap_h) {
 
     /* adjust for the scroll */
     x += xscroll;
@@ -422,47 +422,47 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
     y >>= 3;
 
     /* account for wraparound */
-    while (x >= tilebaseplate_w) {
-        x -= tilebaseplate_w;
+    while (x >= tilemap_w) {
+        x -= tilemap_w;
     }
-    while (y >= tilebaseplate_h) {
-        y -= tilebaseplate_h;
+    while (y >= tilemap_h) {
+        y -= tilemap_h;
     }
     while (x < 0) {
-        x += tilebaseplate_w;
+        x += tilemap_w;
     }
     while (y < 0) {
-        y += tilebaseplate_h;
+        y += tilemap_h;
     }
 
-    /* the larger screen baseplates (bigger than 32x32) are made of multiple stitched
+    /* the larger screen maps (bigger than 32x32) are made of multiple stitched
        together - the offset is used for finding which screen block we are in
        for these cases */
     int offset = 0;
 
-    /* if the width is 64, add 0x400 offset to get to tile baseplates on right   */
-    if (tilebaseplate_w == 64 && x >= 32) {
+    /* if the width is 64, add 0x400 offset to get to tile maps on right   */
+    if (tilemap_w == 64 && x >= 32) {
         x -= 32;
         offset += 0x400;
     }
 
     /* if height is 64 and were down there */
-    if (tilebaseplate_h == 64 && y >= 32) {
+    if (tilemap_h == 64 && y >= 32) {
         y -= 32;
 
         /* if width is also 64 add 0x800, else just 0x400 */
-        if (tilebaseplate_w == 64) {
+        if (tilemap_w == 64) {
             offset += 0x800;
         } else {
             offset += 0x400;
         }
     }
 
-    /* find the index in this tile baseplate */
+    /* find the index in this tile map */
     int index = y * 32 + x;
 
     /* return the tile */
-    return tilebaseplate[index + offset];
+    return tilemap[index + offset];
 }
 
 
@@ -477,8 +477,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
 
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, baseplate,
-            baseplate_width, baseplate_height);
+    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, map,
+            map_width, map_height);
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
