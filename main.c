@@ -497,7 +497,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     }
 
     /*Is it a tile that should kill square*/
-    if(TC == 1 || TC == 2 || TC == 3 || TC = 4 || TC == 5 || TC==6 || TC==7 || TC==8 || TC==9 || TC==12 || TC==13 || TC==14 || TC==15 || TC == 23 ||
+    if(TC == 1 || TC == 2 || TC == 3 || TC == 4 || TC == 5 || TC==6 || TC==7 || TC==8 || TC==9 || TC==12 || TC==13 || TC==14 || TC==15 || TC == 23 ||
        TC == 24 || TC==34 || TC==35){
 
     }
