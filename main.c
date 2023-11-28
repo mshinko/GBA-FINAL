@@ -351,11 +351,11 @@ struct Square {
 
 /* initialize the koopa */
 void square_init(struct Square* square) {
-    square->x = 100;
+    square->x = 20;
     square->y = 113;
     square->yvel = 0;
     square->gravity = 75;
-    square->border = 100;
+    square->border = 160;
     square->frame = 0;
     square->move = 0;
     square->counter = 0;
@@ -404,7 +404,7 @@ void square_stop(struct Square* square) {
 /* start the koopa jumping, unless already fgalling */
 void square_jump(struct Square* square) {
     if (!square->falling) {
-        square->yvel = -1000;
+        square->yvel = -1350;
         square->falling = 1;
     }
 }
@@ -496,7 +496,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     }
     else {
         /* he is falling now */
-        square->falling = 1;
+/*        square->falling = 1;*/
     }
 
 
@@ -538,7 +538,7 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-    int yscroll = 90;
+    int yscroll = 200;
     /* loop forever */
     while (1) {
         /* update the koopa */
