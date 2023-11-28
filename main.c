@@ -600,16 +600,26 @@ int main() {
         if (button_pressed(BUTTON_A)) {
            square_jump(&square);
         }
+
+         if(square.yvel<0){
+             yscroll--;
+         }
+         if(square.yvel>0){
+             yscroll++;
+         }
+
         /* wait for vblank before scrolling and moving sprites */
         wait_vblank();
         *bg0_x_scroll = xscroll;
+        *bg0_y_scroll = yscroll;
+
+        *bg1_x_scroll = xscroll;
+        *bg1_y_scroll = yscroll;
+
+        *bg2_x_scroll = xscroll;
+        *bg2_y_scroll = yscroll;
+
         sprite_update_all();
-        if(square.yvel<0){
-            yscroll--;
-        }
-        if(square.yvel>0){
-            yscroll++;
-        }
         /* delay some */
         delay(1000);
     }
