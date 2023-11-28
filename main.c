@@ -352,9 +352,7 @@ struct Square {
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
-    square->y = 125;
-    square->y = 113;
-    square->y = 140;
+    square->y = 120;
     square->yvel = 0;
     square->gravity = 75;
     square->border = 160;
@@ -406,7 +404,7 @@ void square_stop(struct Square* square) {
 /* start the koopa jumping, unless already fgalling */
 void square_jump(struct Square* square) {
     if (!square->falling) {
-        square->yvel = -1350;
+        square->yvel = -1500;
         square->falling = 1;
     }
 }
@@ -467,8 +465,6 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
     return tilemap[index + offset];
 }
 
-
-/* update the koopa */
 /* update the koopa */
 void square_update(struct Square* square, int xscroll,int yscroll) {
     /* update y position and speed if falling */
@@ -478,8 +474,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     }
 
     /* check which tile the koopa's feet are over */
-
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 8, xscroll, 0, map,
+    unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, 0, map,
             map_width, map_height);
 
     /* if it's block tile
@@ -540,7 +535,7 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-    int yscroll = 200;
+    int yscroll = 0;
     /* loop forever */
     while (1) {
         /* update the koopa */
@@ -564,6 +559,6 @@ int main() {
             yscroll++;
         }
         /* delay some */
-        delay(100);
+        delay(300);
     }
 }
