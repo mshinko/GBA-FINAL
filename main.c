@@ -5,7 +5,7 @@
 
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 160
-
+#define OFFSET_Y 100
 /* include the background image we are using */
 #include "background.h"
 #include "baseplate.h"
@@ -176,7 +176,7 @@ void setup_background() {
         (0 << 2)  |       /* the char block the image data is stored in */
         (0 << 6)  |       /* the mosaic flag */
         (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
-        (16 << 8) |       /* the screen block the tile data is stored in */
+        (17 << 8) |       /* the screen block the tile data is stored in */
         (1 << 13) |       /* wrapping flag */
         (0 << 14);        /* bg size, 0 is 256x256 */
 
@@ -187,7 +187,7 @@ void setup_background() {
         (0 << 2)  |       /* the char block the image data is stored in */
         (0 << 6)  |       /* the mosaic flag */
         (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
-        (16 << 8) |       /* the screen block the tile data is stored in */
+        (18 << 8) |       /* the screen block the tile data is stored in */
         (1 << 13) |       /* wrapping flag */
         (0 << 14);        /* bg size, 0 is 256x256 */
 
@@ -463,7 +463,7 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
 
     /* adjust for the scroll */
     x += xscroll;
-    y += yscroll;
+    y += yscroll + OFFSET_Y;
 
     /* convert from screen coordinates to tile coordinates */
     x >>= 3;
