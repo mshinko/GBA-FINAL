@@ -404,7 +404,7 @@ void square_stop(struct Square* square) {
 /* start the koopa jumping, unless already fgalling */
 void square_jump(struct Square* square) {
     if (!square->falling) {
-        square->yvel = -1500;
+        square->yvel = -1050;
         square->falling = 1;
     }
 }
@@ -559,6 +559,6 @@ int main() {
             yscroll++;
         }
         /* delay some */
-        delay(300);
+        delay(1000);
     }
 }
