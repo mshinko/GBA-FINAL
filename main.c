@@ -399,7 +399,7 @@ struct Square {
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
-    square->y = 120;
+    square->y = 0;
     square->yvel = 0;
     square->gravity = 75;
     square->border = 160;
@@ -407,7 +407,7 @@ void square_init(struct Square* square) {
     square->move = 0;
     square->counter = 0;
     square->falling = 0;
-    square->animation_delay = 8;
+    square->animation_delay = 4;
     square->sprite = sprite_init(square->x, square->y, SIZE_16_16, 0, 0, square->frame, 0);
 }
 
@@ -531,8 +531,9 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
         tile == 40 || tile == 41 || tile ==42) {
         /* stop the fall! */
         square->falling = 0;
+        square->move=0;
         square->yvel = 0;
-
+        square->frame=0; 
         /* make him line up with the top of a block works by clearing out the lower bits to 0 */
         square->y &= ~0x3;
 
@@ -553,8 +554,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     if (square->move) {
         square->counter++;
         if (square->counter >= square->animation_delay) {
-            square->frame = square->frame + 16;
-            if (square->frame > 16) {
+            square->frame = square->frame + 8;
+            if (square->frame > 24) {
                 square->frame = 0;
             }
             sprite_set_offset(square->sprite, square->frame);
@@ -613,11 +614,11 @@ int main() {
         *bg0_x_scroll = xscroll;
         *bg0_y_scroll = yscroll;
 
-        *bg1_x_scroll = xscroll;
-        *bg1_y_scroll = yscroll;
+        //*bg1_x_scroll = xscroll;
+        //*bg1_y_scroll = yscroll;
 
-        *bg2_x_scroll = xscroll;
-        *bg2_y_scroll = yscroll;
+        //*bg2_x_scroll = xscroll;
+        //*bg2_y_scroll = yscroll;
 
         sprite_update_all();
         /* delay some */
