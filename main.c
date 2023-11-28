@@ -352,7 +352,7 @@ struct Square {
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
-    square->y = 140;
+    square->y = 125;
     square->yvel = 0;
     square->gravity = 75;
     square->border = 100;
@@ -477,12 +477,12 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
 
-    unsigned short tile = tile_lookup(square->x + 8, square->y + 32, xscroll, yscroll, map,
+    unsigned short tile = tile_lookup(square->x + 8, square->y + 8, xscroll, 0, map,
             map_width, map_height);
 
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
-    if (tile == 1 || tile == 2 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
+    if (tile == 1 || tile == 2 || tile == 5 || tile == 6 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
         tile == 40 || tile == 41 || tile ==42) {
         /* stop the fall! */
         square->falling = 0;
