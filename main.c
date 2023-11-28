@@ -352,15 +352,9 @@ struct Square {
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
-<<<<<<< HEAD
     square->y = 125;
-=======
-<<<<<<< HEAD
     square->y = 113;
-=======
     square->y = 140;
->>>>>>> 2d0795aca860b43762bcceb17c7d32e693752e4e
->>>>>>> 5eaa3550c917abc9c50486e4799e592e8f387a36
     square->yvel = 0;
     square->gravity = 75;
     square->border = 160;
@@ -504,7 +498,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     }
     else {
         /* he is falling now */
-/*        square->falling = 1;*/
+        square->falling = 1;
     }
 
 
