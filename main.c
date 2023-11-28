@@ -429,7 +429,7 @@ int square_left(struct Square* square) {
 int square_right(struct Square* square) {
     /* face right */
     sprite_set_horizontal_flip(square->sprite, 0);
-    square->move = 1;
+    //square->move = 1;
 
     /* if we are at the right end, just scroll the screen */
     if (square->x > (SCREEN_WIDTH - 16 - square->border)) {
@@ -453,6 +453,7 @@ void square_jump(struct Square* square) {
     if (!square->falling) {
         square->yvel = -1050;
         square->falling = 1;
+        square->move =1;
     }
 }
 
@@ -536,7 +537,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
         square->y &= ~0x3;
 
         /* move him down one because there is a one pixel gap in the image */
-        square->y++;
+        //square->y++;
     }
     else {
         /* he is falling now */
