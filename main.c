@@ -489,7 +489,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
         square->y &= ~0x3;
 
         /* move him down one because there is a one pixel gap in the image */
-        square->y++;
+        //square->y++;
     }
     else {
         /* he is falling now */
