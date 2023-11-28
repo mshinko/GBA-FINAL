@@ -474,9 +474,9 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     }
 
     /* check which tile the koopa's feet are over */
-    unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, 0, map,
-            map_width, map_height);
-
+    unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, 0, map, map_width, map_height);
+    
+    unsigned short TC= tile_lookup(square->x+8, square->y, xscroll, 0, map, map_width, map_height);
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
     if (tile == 1 || tile == 2 || tile == 5 || tile == 6 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
@@ -496,7 +496,11 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
         square->falling = 1;
     }
 
+    /*Is it a tile that should kill square*/
+    if(TC == 1 || TC == 2 || TC == 3 || TC = 4 || TC == 5 || TC==6 || TC==7 || TC==8 || TC==9 || TC==12 || TC==13 || TC==14 || TC==15 || TC == 23 ||
+       TC == 24 || TC==34 || TC==35){
 
+    }
     /* update animation if moving */
     if (square->move) {
         square->counter++;
