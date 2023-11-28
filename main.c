@@ -75,11 +75,11 @@ volatile short* bg0_y_scroll = (unsigned short*) 0x4000012;
 volatile unsigned short* scanline_counter = (volatile unsigned short*) 0x4000006;
 
 /* wait for the screen to be fully drawn so we can do something during vblank */
-void wait_vblank() {
+//void wait_vblank() {
     /* wait until all 160 lines have been updated */
-    while (*scanline_counter < 160) { }
-}
-
+  //  while (*scanline_counter < 160) { }
+//}
+extern void wait_vblank();
 /* this function checks whether a particular button has been pressed */
 unsigned char button_pressed(unsigned short button) {
     /* and the button register with the button constant we want */
