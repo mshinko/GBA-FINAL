@@ -10,7 +10,7 @@
 #include "background.h"
 #include "baseplate.h"
 /* include the sprite image we are using */
-#include "square.h"
+#include "sprite_square.h"
 #include "obstacles.h"
 /* include the tile map we are using */
 #include "obby1.h"
@@ -361,10 +361,10 @@ void sprite_set_offset(struct Sprite* sprite, int offset) {
 /* setup the sprite image and palette */
 void setup_sprite_image() {
     /* load the palette from the image into palette memory*/
-    memcpy16_dma((unsigned short*) sprite_palette, (unsigned short*) square_palette, PALETTE_SIZE);
+    memcpy16_dma((unsigned short*) sprite_palette, (unsigned short*) sprite_square_palette, PALETTE_SIZE);
 
     /* load the image into sprite image memory */
-    memcpy16_dma((unsigned short*) sprite_image_memory, (unsigned short*) square_data, (square_width * square_height) / 2);
+    memcpy16_dma((unsigned short*) sprite_image_memory, (unsigned short*) sprite_square_data, (sprite_square_width * sprite_square_height) / 2);
 }
 
 /* a struct for the koopa's logic and behavior */
