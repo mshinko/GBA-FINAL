@@ -161,7 +161,7 @@ void setup_background() {
             (obstacles_width * obstacles_height) / 2);
 
     /* set all control the bits in this register */
-    *bg0_control = 3 |    /* priority, 0 is highest, 3 is lowest */
+    *bg0_control = 0 |    /* priority, 0 is highest, 3 is lowest */
         (0 << 2)  |       /* the char block the image data is stored in */
         (0 << 6)  |       /* the mosaic flag */
         (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
@@ -172,7 +172,7 @@ void setup_background() {
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(16), (unsigned short*) background_data, background_width * background_height);
     /* set all control the bits in this register */
-    *bg1_control = 2 |    /* priority, 0 is highest, 3 is lowest */
+    *bg1_control = 1 |    /* priority, 0 is highest, 3 is lowest */
         (0 << 2)  |       /* the char block the image data is stored in */
         (0 << 6)  |       /* the mosaic flag */
         (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
@@ -183,7 +183,7 @@ void setup_background() {
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(17), (unsigned short*) baseplate_data, baseplate_width * baseplate_height);
     /* set all control the bits in this register */
-    *bg2_control = 1 |    /* priority, 0 is highest, 3 is lowest */
+    *bg2_control = 2 |    /* priority, 0 is highest, 3 is lowest */
         (0 << 2)  |       /* the char block the image data is stored in */
         (0 << 6)  |       /* the mosaic flag */
         (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
@@ -614,11 +614,11 @@ int main() {
         *bg0_x_scroll = xscroll;
         *bg0_y_scroll = yscroll;
 
-        //*bg1_x_scroll = xscroll;
-        //*bg1_y_scroll = yscroll;
+        *bg1_x_scroll = xscroll;
+        *bg1_y_scroll = yscroll;
 
-        //*bg2_x_scroll = xscroll;
-        //*bg2_y_scroll = yscroll;
+        *bg2_x_scroll = xscroll;
+        *bg2_y_scroll = yscroll;
 
         sprite_update_all();
         /* delay some */
