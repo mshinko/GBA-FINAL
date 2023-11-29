@@ -399,7 +399,7 @@ struct Square {
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
-    square->y = 0;
+    square->y = 00;
     square->yvel = 0;
     square->gravity = 75;
     square->border = 160;
@@ -463,7 +463,7 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
 
     /* adjust for the scroll */
     x += xscroll;
-    y += yscroll + OFFSET_Y;
+    y += yscroll ;
 
     /* convert from screen coordinates to tile coordinates */
     x >>= 3;
