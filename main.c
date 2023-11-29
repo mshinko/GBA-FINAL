@@ -592,7 +592,7 @@ int main() {
     /* loop forever */
     while (1) {
         /* update the koopa */
-        square_update(&square, xscroll, yscroll);
+        square_update(&square, xscroll*2, yscroll);
 
         /* now the arrow keys move the koopa */
         square_right(&square);
@@ -602,21 +602,15 @@ int main() {
            square_jump(&square);
         }
 
-         if(square.yvel<0){
-             yscroll--;
-         }
-         if(square.yvel>0){
-             yscroll++;
-         }
         /* wait for vblank before scrolling and moving sprites */
         wait_vblank();
-        *bg0_x_scroll = xscroll*2;
+        *bg0_x_scroll = xscroll*3;
         *bg0_y_scroll = yscroll;
 
-        *bg1_x_scroll = xscroll;
+        *bg1_x_scroll = xscroll*2;
         *bg1_y_scroll = yscroll;
 
-        *bg2_x_scroll = xscroll;
+        *bg2_x_scroll = xscroll*2;
         *bg2_y_scroll = yscroll;
 
         sprite_update_all();
