@@ -197,23 +197,24 @@ void setup_background() {
 
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(18), (unsigned short*) obby1_data, obby1_width * obby1_height);
-}
-void set_background2() 
-{
+
     /* set all control the bits in this register */
-    *bg3_control = 0 |    /* priority, 0 is highest, 3 is lowest */
-        (0 << 3)  |       /* the char block the image data is stored in */
-        (0 << 6)  |       /* the mosaic flag */
-        (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
-        (19 << 8) |       /* the screen block the tile data is stored in */
-        (1 << 13) |       /* wrapping flag */
-        (0 << 14);        /* bg size, 0 is 256x256 */
+//    *bg3_control = 0 |    /* priority, 0 is highest, 3 is lowest */
+  //      (0 << 3)  |       /* the char block the image data is stored in */
+    //    (0 << 6)  |       /* the mosaic flag */
+      //  (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
+       // (19 << 8) |       /* the screen block the tile data is stored in */
+       // (1 << 13) |       /* wrapping flag */
+       // (0 << 14);        /* bg size, 0 is 256x256 */
 
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(19), (unsigned short*) obby2_data, obby2_width * obby2_height);
 
 }
-
+void switch_screen(int screen_block)
+{
+    *bg2_control = (*bg2_control) | (screen_block << 8);
+}
 /* just kill time */
 void delay(unsigned int amount) {
     for (int i = 0; i < amount * 10; i++);
@@ -589,7 +590,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 /* the main function */
 int main() {
     /* we set the mode to mode 0 with bg0 on */
-    *display_control = MODE0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | BG3_ENABLE | SPRITE_ENABLE | SPRITE_MAP_1D;
+    *display_control = MODE0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | SPRITE_ENABLE | SPRITE_MAP_1D;
 
     /* setup the background 0 */
     setup_background();
@@ -608,7 +609,7 @@ int main() {
     /* set initial scroll to 0 */
     int xscroll = 0;
     int yscroll = 80;
-       
+    int count = 0;       
     /* loop forever */
     while (1) {
         /* update the koopa */
@@ -624,10 +625,22 @@ int main() {
 
 
         /* wait for vblank before scrolling and moving sprites */
-        wait_vblank();
-        set_background2();  // Set up the obby2 screen after obby1 has scrolled all the wa
+        // Set up the obby2 screen after obby1 has scrolled all the wa
         /* wait for vblank before scrolling and moving sprites */
         wait_vblank();
+        if(xscroll % 256 == 0)
+        {
+            if(count % 2 == 0)
+            {
+                switch_screen(19);
+                count++;
+            }
+            else
+            {
+                switch_screen(18);
+                count++;
+            }
+        }
         *bg0_x_scroll = xscroll*3;
         *bg0_y_scroll = yscroll;
 
