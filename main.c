@@ -589,7 +589,7 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-    int yscroll = 0;
+    int yscroll = 100;
     /* loop forever */
     while (1) {
         /* update the koopa */
