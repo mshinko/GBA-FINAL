@@ -522,9 +522,9 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
     }
 
     /* check which tile the koopa's feet are over */
-    unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, 0, baseplate_data, baseplate_width, baseplate_height);
+    unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
     
-    unsigned short TC= tile_lookup(square->x+8, square->y, xscroll, 0, baseplate_data, baseplate_width, baseplate_height);
+    unsigned short TC= tile_lookup(square->x+8, square->y, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
     if (tile == 1 || tile == 2 || tile == 5 || tile == 6 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
@@ -533,7 +533,8 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
         square->falling = 0;
         square->move=0;
         square->yvel = 0;
-        square->frame=0; 
+        square->frame=0;
+        sprite_set_offset(square->sprite, square->frame); 
         /* make him line up with the top of a block works by clearing out the lower bits to 0 */
         square->y &= ~0x3;
 
