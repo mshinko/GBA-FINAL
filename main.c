@@ -86,11 +86,11 @@ volatile short* bg2_y_scroll = (unsigned short*) 0x400001a;
 volatile unsigned short* scanline_counter = (volatile unsigned short*) 0x4000006;
 
 /* wait for the screen to be fully drawn so we can do something during vblank */
-//void wait_vblank() {
+void wait_vblank() {
     /* wait until all 160 lines have been updated */
-  //  while (*scanline_counter < 160) { }
-//}
-extern void wait_vblank();
+    while (*scanline_counter < 160) { }
+}
+//extern void wait_vblank();
 /* this function checks whether a particular button has been pressed */
 unsigned char button_pressed(unsigned short button) {
     /* and the button register with the button constant we want */
@@ -193,9 +193,6 @@ void setup_background() {
 
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(18), (unsigned short*) obby1_data, obby1_width * obby1_height);
-
-
-
 }
 
 /* just kill time */
@@ -399,7 +396,7 @@ struct Square {
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
-    square->y = 00;
+    square->y = 110;
     square->yvel = 0;
     square->gravity = 75;
     square->border = 160;
@@ -523,12 +520,14 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
     unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
-    
+    unsigned short tileOB = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby1_data, obby1_width, obby1_height);
+ 
     unsigned short TC= tile_lookup(square->x+8, square->y, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
     if (tile == 1 || tile == 2 || tile == 5 || tile == 6 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
-        tile == 40 || tile == 41 || tile ==42) {
+        tile == 34 || tile == 40 || tile == 41 || tile == 42 || tileOB == 1 || tileOB == 2 || tileOB == 5 || tileOB == 6 || tileOB == 23 
+        || tileOB ==34 || tileOB == 24 || tileOB ==7 || tileOB == 8 || tileOB ==9 || tileOB == 40 || tileOB == 41 || tileOB == 42) {
         /* stop the fall! */
         square->falling = 0;
         square->move=0;
@@ -589,7 +588,7 @@ int main() {
 
     /* set initial scroll to 0 */
     int xscroll = 0;
-    int yscroll = 100;
+    int yscroll = 80;
     /* loop forever */
     while (1) {
         /* update the koopa */
@@ -609,7 +608,6 @@ int main() {
          if(square.yvel>0){
              yscroll++;
          }
-
         /* wait for vblank before scrolling and moving sprites */
         wait_vblank();
         *bg0_x_scroll = xscroll;
