@@ -610,7 +610,7 @@ int main() {
          }
         /* wait for vblank before scrolling and moving sprites */
         wait_vblank();
-        *bg0_x_scroll = xscroll;
+        *bg0_x_scroll = xscroll*2;
         *bg0_y_scroll = yscroll;
 
         *bg1_x_scroll = xscroll;
