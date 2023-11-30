@@ -14,6 +14,7 @@
 #include "obstacles.h"
 /* include the tile map we are using */
 #include "obby1.h"
+#include "youwin.h"
 #include "obby2.h"
 /* the tile mode flags needed for display control register */
 #define MODE0 0x00
@@ -212,7 +213,8 @@ void setup_background() {
 
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(19), (unsigned short*) obby2_data, obby2_width * obby2_height);
-
+    memcpy16_dma((unsigned short*) screen_block(20), (unsigned short*) youwin_data, youwin_width * youwin_height);
+     
 }
 void switch_screen(int screen_block)
 {
@@ -540,19 +542,23 @@ void square_death(){
 //Check for collision for the current obstacle file
 short determine_tileOB(struct Square* square, int xscroll, int yscroll, int count){
 
-    if(count%2==0){
+    if(count%2==0 && count !=2){
         return tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby1_data, obby1_width, obby1_height);
-    }else{
+    }else if(count%2==1 && count != 2){
         return tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby2_data, obby2_width, obby2_height);
+    }else{
+        return tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, youwin_data, youwin_width, youwin_height);  
     }
 } 
 //Check for collision for the current obstacle file the square inhabits
 short determine_tileTC(struct Square* square, int xscroll, int yscroll, int count){
 
-     if(count%2==0){
+     if(count%2==0 && count !=2){
          return tile_lookup(square->x + 8, square->y, xscroll, yscroll, obby1_data, obby1_width, obby1_height);
-     }else{
+     }else if(count%2==1 && count != 2){
          return tile_lookup(square->x + 8, square->y, xscroll, yscroll, obby2_data, obby2_width, obby2_height);
+     }else{
+         return tile_lookup(square->x + 8, square->y, xscroll, yscroll, youwin_data, youwin_width, youwin_height);
      }
  }
 
@@ -656,15 +662,19 @@ int main() {
         wait_vblank();
         if(xscroll % 256 == 0)
         {
-            if(count % 2 == 0)
+            if(count % 2 == 0 && count != 2)
             {
                 switch_screen(19);
                 count++;
             }
-            else
+            else if(count != 2)
             {
                 switch_screen(18);
                 count++;
+            }
+            if(count == 2)
+            {
+                switch_screen(20);
             }
         }
         *bg0_x_scroll = xscroll*3;
