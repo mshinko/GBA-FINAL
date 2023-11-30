@@ -127,6 +127,9 @@ volatile unsigned short* screen_block(unsigned long block) {
 #define DMA_16 0x00000000
 #define DMA_32 0x04000000
 
+//Global Varaiable to check if Square is alive
+int isAlive=1;
+
 /* pointer to the DMA source location */
 volatile unsigned int* dma_source = (volatile unsigned int*) 0x40000D4;
 
@@ -531,6 +534,9 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
     return tilemap[index + offset];
 }
 
+void square_death(){
+    isAlive=0;
+}
 //Check for collision for the current obstacle file
 short determine_tileOB(struct Square* square, int xscroll, int yscroll, int count){
 
@@ -540,6 +546,16 @@ short determine_tileOB(struct Square* square, int xscroll, int yscroll, int coun
         return tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby2_data, obby2_width, obby2_height);
     }
 } 
+//Check for collision for the current obstacle file the square inhabits
+short determine_tileTC(struct Square* square, int xscroll, int yscroll, int count){
+
+     if(count%2==0){
+         return tile_lookup(square->x + 8, square->y, xscroll, yscroll, obby1_data, obby1_width, obby1_height);
+     }else{
+         return tile_lookup(square->x + 8, square->y, xscroll, yscroll, obby2_data, obby2_width, obby2_height);
+     }
+ }
+
 /* update the koopa */
 void square_update(struct Square* square, int xscroll, int yscroll, int count) {
     /* update y position and speed if falling */
@@ -552,7 +568,7 @@ void square_update(struct Square* square, int xscroll, int yscroll, int count) {
     unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
     unsigned short tileOB = determine_tileOB(square, xscroll, yscroll, count);
  
-    unsigned short TC= tile_lookup(square->x+8, square->y, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
+    unsigned short TC= determine_tileTC(square, xscroll, yscroll, count);
     /* if it's block tile
      * these numbers refer to the tile indices of the blocks the koopa can walk on */
     if (tile == 1 || tile == 2 || tile == 5 || tile == 6 || tile == 23 || tile == 24 || tile ==7 || tile == 8 || tile ==9 ||
@@ -578,7 +594,7 @@ void square_update(struct Square* square, int xscroll, int yscroll, int count) {
     /*Is it a tile that should kill square*/
     if(TC == 1 || TC == 2 || TC == 3 || TC == 4 || TC == 5 || TC==6 || TC==7 || TC==8 || TC==9 || TC==12 || TC==13 || TC==14 || TC==15 || TC == 23 ||
        TC == 24 || TC==34 || TC==35){
-
+       square_death();
     }
     /* update animation if moving */
     if (square->move) {
@@ -621,7 +637,7 @@ int main() {
     int yscroll = 80;
     int count = 0;       
     /* loop forever */
-    while (1) {
+    while (isAlive) {
         /* update the koopa */
         square_update(&square, xscroll*2, yscroll, count);
 
