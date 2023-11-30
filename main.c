@@ -222,10 +222,10 @@ void switch_screen(int screen_block)
     *bg2_control = (*bg2_control) | (screen_block << 8);
 }
 /* just kill time */
-void delay(unsigned int amount) {
-    for (int i = 0; i < amount * 10; i++);
-}
-
+//void delay(unsigned int amount) {
+  //  for (int i = 0; i < amount * 10; i++);
+//}
+extern void delay(unsigned int amount);
 /* a sprite is a moveable image on the screen */
 struct Sprite {
     unsigned short attribute0;
@@ -688,6 +688,6 @@ int main() {
 
         sprite_update_all();
         /* delay some */
-        delay(1000);
+        delay(3000);
     }
 }
