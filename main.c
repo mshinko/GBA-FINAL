@@ -626,7 +626,7 @@ int main() {
         square_update(&square, xscroll*2, yscroll, count);
 
         /* now the arrow keys move the koopa */
-        square_right(&square);
+        //square_right(&square);
         xscroll += 1;
         
         if (button_pressed(BUTTON_A)) {
