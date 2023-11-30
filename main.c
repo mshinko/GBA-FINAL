@@ -531,8 +531,17 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
     return tilemap[index + offset];
 }
 
+//Check for collision for the current obstacle file
+short determine_tileOB(struct Square* square, int xscroll, int yscroll, int count){
+
+    if(count%2==0){
+        return tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby1_data, obby1_width, obby1_height);
+    }else{
+        return tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby2_data, obby2_width, obby2_height);
+    }
+} 
 /* update the koopa */
-void square_update(struct Square* square, int xscroll,int yscroll) {
+void square_update(struct Square* square, int xscroll, int yscroll, int count) {
     /* update y position and speed if falling */
     if (square->falling) {
         square->y += (square->yvel >> 8);
@@ -541,7 +550,7 @@ void square_update(struct Square* square, int xscroll,int yscroll) {
 
     /* check which tile the koopa's feet are over */
     unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
-    unsigned short tileOB = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, obby1_data, obby1_width, obby1_height);
+    unsigned short tileOB = determine_tileOB(square, xscroll, yscroll, count);
  
     unsigned short TC= tile_lookup(square->x+8, square->y, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
     /* if it's block tile
@@ -614,7 +623,7 @@ int main() {
     /* loop forever */
     while (1) {
         /* update the koopa */
-        square_update(&square, xscroll*2, yscroll);
+        square_update(&square, xscroll*2, yscroll, count);
 
         /* now the arrow keys move the koopa */
         square_right(&square);
@@ -651,8 +660,6 @@ int main() {
         *bg2_x_scroll = xscroll*2;
         *bg2_y_scroll = yscroll;
 
-        *bg3_x_scroll = xscroll;
-        *bg3_y_scroll = yscroll;
         sprite_update_all();
         /* delay some */
         delay(1000);
