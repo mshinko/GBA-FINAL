@@ -213,6 +213,7 @@ void setup_background() {
 }
 void switch_screen(int screen_block)
 {
+    *bg2_control &= ~(31 << 8);
     *bg2_control = (*bg2_control) | (screen_block << 8);
 }
 /* just kill time */
