@@ -6,7 +6,6 @@
 /* Entry point for the switch_screen function */
 .global switch_screen
 switch_screen:
-    ldr r0, =screen_block_index
     ldr r1, =BG2_CONTROL
     ldr r2, [r1]
     bic r2, r2, #0x01F00

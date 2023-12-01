@@ -146,18 +146,6 @@ void memcpy16_dma(unsigned short* dest, unsigned short* source, int amount) {
     *dma_destination = (unsigned int) dest;
     *dma_count = amount | DMA_16 | DMA_ENABLE;
 }
-/*
-void memcpy17_dma(unsigned short* dest, unsigned short* source, int amount) {
-    *dma_source = (unsigned int) source;
-    *dma_destination = (unsigned int) dest;
-    *dma_count = amount | DMA_17 | DMA_ENABLE;
-}
-void memcpy18_dma(unsigned short* dest, unsigned short* source, int amount) {
-    *dma_source = (unsigned int) source;
-    *dma_destination = (unsigned int) dest;
-    *dma_count = amount | DMA_18 | DMA_ENABLE;
-}
-*/
 /* function to setup background 0 for this program */
 void setup_background() {
 
@@ -201,15 +189,6 @@ void setup_background() {
 
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(18), (unsigned short*) obby1_data, obby1_width * obby1_height);
-
-    /* set all control the bits in this register */
-//    *bg3_control = 0 |    /* priority, 0 is highest, 3 is lowest */
-  //      (0 << 3)  |       /* the char block the image data is stored in */
-    //    (0 << 6)  |       /* the mosaic flag */
-      //  (1 << 7)  |       /* color mode, 0 is 16 colors, 1 is 256 colors */
-       // (19 << 8) |       /* the screen block the tile data is stored in */
-       // (1 << 13) |       /* wrapping flag */
-       // (0 << 14);        /* bg size, 0 is 256x256 */
 
     /* load the tile data into screen block 16 */
     memcpy16_dma((unsigned short*) screen_block(19), (unsigned short*) obby2_data, obby2_width * obby2_height);
@@ -323,7 +302,6 @@ void sprite_clear() {
         sprites[i].attribute1 = SCREEN_WIDTH;
     }
 }
-//extern void sprite_clear();
 
 /* set a sprite postion */
 void sprite_position(struct Sprite* sprite, int x, int y) {
@@ -391,7 +369,6 @@ void setup_sprite_image() {
     /* load the image into sprite image memory */
     memcpy16_dma((unsigned short*) sprite_image_memory, (unsigned short*) sprite_square_data, (sprite_square_width * sprite_square_height) / 2);
 }
-//extern void setup_sprite_image;
 /* a struct for the koopa's logic and behavior */
 struct Square {
     /* the actual sprite attribute info */
@@ -538,6 +515,7 @@ unsigned short tile_lookup(int x, int y, int xscroll, int yscroll,
     return tilemap[index + offset];
 }
 
+//If square runs into something that should kill it should be dead
 void square_death(){
     isAlive=0;
 }
@@ -564,7 +542,7 @@ short determine_tileTC(struct Square* square, int xscroll, int yscroll, int coun
      }
  }
 
-/* update the koopa */
+/* update the square */
 void square_update(struct Square* square, int xscroll, int yscroll, int count) {
     /* update y position and speed if falling */
     if (square->falling) {
@@ -572,7 +550,7 @@ void square_update(struct Square* square, int xscroll, int yscroll, int count) {
         square->yvel += square->gravity;
     }
 
-    /* check which tile the koopa's feet are over */
+    /* check which tile the square is over */
     unsigned short tile = tile_lookup(square->x + 8, square->y+16, xscroll, yscroll, baseplate_data, baseplate_width, baseplate_height);
     unsigned short tileOB = determine_tileOB(square, xscroll, yscroll, count);
  
@@ -591,8 +569,6 @@ void square_update(struct Square* square, int xscroll, int yscroll, int count) {
         /* make him line up with the top of a block works by clearing out the lower bits to 0 */
         square->y &= ~0x3;
 
-        /* move him down one because there is a one pixel gap in the image */
-        //square->y++;
     }
     else {
         /* he is falling now */
@@ -623,10 +599,10 @@ void square_update(struct Square* square, int xscroll, int yscroll, int count) {
 
 /* the main function */
 int main() {
-    /* we set the mode to mode 0 with bg0 on */
+    /* we set the mode to mode 0 with bg0, bg1, bg2 on */
     *display_control = MODE0 | BG0_ENABLE | BG1_ENABLE | BG2_ENABLE | SPRITE_ENABLE | SPRITE_MAP_1D;
 
-    /* setup the background 0 */
+    /* setup the backgrounds */
     setup_background();
 
     /* setup the sprite image data */
