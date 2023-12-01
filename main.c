@@ -2,7 +2,6 @@
  * sprites.c
  * program which demonstrates GBA sprites
  */
-
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 160
 #define OFFSET_Y 100
@@ -98,10 +97,10 @@ void wait_vblank() {
 //extern void wait_vblank();
 /* this function checks whether a particular button has been pressed */
 unsigned char button_pressed(unsigned short button) {
-    /* and the button register with the button constant we want */
+    // and the button register with the button constant we want 
     unsigned short pressed = *buttons & button;
 
-    /* if this value is zero, then it's not pressed */
+    // if this value is zero, then it's not pressed 
     if (pressed == 0) {
         return 1;
     } else {
@@ -109,6 +108,7 @@ unsigned char button_pressed(unsigned short button) {
     }
 }
 
+//extern char button_pressed(unsigned short button);
 /* return a pointer to one of the 4 character blocks (0-3) */
 volatile unsigned short* char_block(unsigned long block) {
     /* they are each 16K big */
@@ -216,11 +216,12 @@ void setup_background() {
     memcpy16_dma((unsigned short*) screen_block(20), (unsigned short*) youwin_data, youwin_width * youwin_height);
      
 }
-void switch_screen(int screen_block)
+/*void switch_screen(int screen_block)
 {
     *bg2_control &= ~(31 << 8);
     *bg2_control = (*bg2_control) | (screen_block << 8);
-}
+}*/
+extern void switch_screen(int screen_block);
 /* just kill time */
 //void delay(unsigned int amount) {
   //  for (int i = 0; i < amount * 10; i++);
@@ -313,15 +314,16 @@ void sprite_update_all() {
 
 /* setup all sprites */
 void sprite_clear() {
-    /* clear the index counter */
+    // clear the index counter 
     next_sprite_index = 0;
 
-    /* move all sprites offscreen to hide them */
+    // move all sprites offscreen to hide them 
     for(int i = 0; i < NUM_SPRITES; i++) {
         sprites[i].attribute0 = SCREEN_HEIGHT;
         sprites[i].attribute1 = SCREEN_WIDTH;
     }
 }
+//extern void sprite_clear();
 
 /* set a sprite postion */
 void sprite_position(struct Sprite* sprite, int x, int y) {
@@ -389,7 +391,7 @@ void setup_sprite_image() {
     /* load the image into sprite image memory */
     memcpy16_dma((unsigned short*) sprite_image_memory, (unsigned short*) sprite_square_data, (sprite_square_width * sprite_square_height) / 2);
 }
-
+//extern void setup_sprite_image;
 /* a struct for the koopa's logic and behavior */
 struct Square {
     /* the actual sprite attribute info */
@@ -418,7 +420,6 @@ struct Square {
 
     int falling;
 };
-
 /* initialize the koopa */
 void square_init(struct Square* square) {
     square->x = 20;
@@ -449,20 +450,21 @@ int square_left(struct Square* square) {
         return 0;
     }
 }
+
 int square_right(struct Square* square) {
-    /* face right */
+    // face right 
     sprite_set_horizontal_flip(square->sprite, 0);
     //square->move = 1;
-
-    /* if we are at the right end, just scroll the screen */
+    // if we are at the right end, just scroll the screen //
     if (square->x > (SCREEN_WIDTH - 16 - square->border)) {
         return 1;
     } else {
-        /* else move right */
+        // else move right 
         square->x++;
         return 0;
     }
 }
+
 
 void square_stop(struct Square* square) {
     square->move = 0;
@@ -688,6 +690,6 @@ int main() {
 
         sprite_update_all();
         /* delay some */
-        delay(3000);
+        delay(4000);
     }
 }
