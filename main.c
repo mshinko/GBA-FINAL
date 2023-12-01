@@ -200,7 +200,7 @@ void setup_background() {
     *bg2_control &= ~(31 << 8);
     *bg2_control = (*bg2_control) | (screen_block << 8);
 }*/
-extern void switch_screen(int screen_block);
+extern void switch_screen(int screen_block_index);
 /* just kill time */
 //void delay(unsigned int amount) {
   //  for (int i = 0; i < amount * 10; i++);
@@ -621,6 +621,11 @@ int main() {
     int yscroll = 80;
     int count = 0;       
     /* loop forever */
+/*
+    int screen_block_value_1 = 19;
+    int screen_block_value_2 = 18;
+    int screen_block_value_3 = 20;
+*/
     while (isAlive) {
         /* update the koopa */
         square_update(&square, xscroll*2, yscroll, count);
@@ -633,7 +638,7 @@ int main() {
            square_jump(&square);
         }
 
-
+        
         /* wait for vblank before scrolling and moving sprites */
         // Set up the obby2 screen after obby1 has scrolled all the wa
         /* wait for vblank before scrolling and moving sprites */
